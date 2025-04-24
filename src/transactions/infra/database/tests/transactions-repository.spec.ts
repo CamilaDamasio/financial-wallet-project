@@ -148,7 +148,7 @@ describe("TransactionsRepository", () => {
       expect(transactionsModel.update).toHaveBeenCalledWith(transactionId, reversedDate);
     });
 
-    it("Should throw a NotFoundException if user does not exists", async () => {
+    it("Should throw a NotFoundException if transaction does not exists", async () => {
       jest
         .spyOn(transactionsModel, "update")
         .mockRejectedValueOnce(new NotFoundException("some error"));
