@@ -2,6 +2,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { TransactionsController } from '../transactions.controller';
 import { TransactionsService } from '../transactions.service';
 import { Transaction } from '../entities/transaction';
+import { ClientGuard } from '../../guards/client.guard';
+import { UsersService } from '../../users/users.service';
 
 describe('TransactionsController', () => {
   let controller: TransactionsController;
@@ -24,6 +26,19 @@ describe('TransactionsController', () => {
     revertTransaction: jest.fn(),
   };
 
+  const mockClientGuard = {
+    canActivate: jest.fn().mockResolvedValue(true),
+  };
+
+  const mockUsersService = {
+    getUserById: jest.fn().mockResolvedValue({
+      id: 1,
+      cpf: '12345678901',
+      balance: 1000,
+      name: 'John Doe',
+    }),
+  };
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [TransactionsController],
@@ -31,6 +46,14 @@ describe('TransactionsController', () => {
         {
           provide: TransactionsService,
           useValue: mockTransactionsService,
+        },
+        {
+          provide: UsersService,
+          useValue: mockUsersService,
+        },
+        {
+          provide: ClientGuard,
+          useValue: mockClientGuard,
         },
       ],
     }).compile();
