@@ -18,9 +18,14 @@ export class TransactionsService {
     private readonly usersService: UsersService,
   ) { }
 
+  private async isClient(userId: number): Promise<boolean> {
+    const user = await this.usersService.getUserById(userId);
+    return user?.rule === 'client';
+  }
+
   async createTransaction(
     transaction: CreateTransactionPayloadDTO
-  ): Promise<any> {
+  ): Promise<Transaction> {
     const transactionPayload = {
       sender_id: transaction.sender_id,
       receiver_id: transaction.receiver_id,
@@ -67,7 +72,7 @@ export class TransactionsService {
 
   async revertTransaction(
     transactionId: number,
-  ): Promise<any> {
+  ): Promise<UpdateResult> {
     const transaction = await this.transactionsRepository.getTransactionById(transactionId);
     if (transaction.status === 'SUCCESS') {
       await this.usersService.revertBalanceTransaction(transaction);
@@ -79,13 +84,13 @@ export class TransactionsService {
     );
   }
 
-  async updateTransactionStatusToSuccess(
+  private async updateTransactionStatusToSuccess(
     transactionId: number,
   ): Promise<UpdateResult> {
     return this.transactionsRepository.updateTransactionStatusToSuccess(transactionId);
   }
 
-  async updateTransactionStatusToFailed(
+  private async updateTransactionStatusToFailed(
     transactionId: number,
   ): Promise<UpdateResult> {
     return this.transactionsRepository.updateTransactionStatusToFailed(transactionId);

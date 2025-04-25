@@ -17,7 +17,7 @@ export class UsersService {
   ) { }
 
   async getUsers(
-  ): Promise<any> {
+  ): Promise<User[]> {
     return this.usersRepository.getUsers();
   }
 
