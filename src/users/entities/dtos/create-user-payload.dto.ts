@@ -7,7 +7,7 @@ export class CreateUserPayloadDTO {
 
   @IsNumber()
   @IsNotEmpty()
-  cpf: number;
+  cpf: string;
 
   @IsString()
   @IsNotEmpty()
@@ -19,7 +19,7 @@ export class CreateUserPayloadDTO {
   @IsNotEmpty()
   rule: string;
 
-  createdAt: Date;
+  created_at: Date;
 
-  updatedAt: Date;
+  updated_at: Date;
 }

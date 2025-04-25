@@ -48,8 +48,8 @@ export class UsersService {
       date_of_birth: new Date(dateOfBirth),
       rule: userPayload.rule,
       balance: 0,
-      createdAt: new Date(),
-      updatedAt: new Date()
+      created_at: new Date(),
+      updated_at: new Date()
     };
     return this.usersRepository.createUser(user);
   }
